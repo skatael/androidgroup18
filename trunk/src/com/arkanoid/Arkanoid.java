@@ -37,9 +37,13 @@ public class Arkanoid extends BaseGameActivity {
  
 
         private Camera mCamera;
+        
+        //Paddle Textures
         private Texture mTexture;
         private TextureRegion mPaddleTextureRegion;
-        private ChangeableText ScoreText;
+        
+        
+        //Block textures
 
        // ===========================================================
 
@@ -69,8 +73,9 @@ public class Arkanoid extends BaseGameActivity {
         public Engine onLoadEngine() {
                        
             this.mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
+//            mCamera.
             
-            return new Engine(new EngineOptions(true, ScreenOrientation.LANDSCAPE, 
+            return new Engine(new EngineOptions(true, ScreenOrientation.PORTRAIT, 
                     new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.mCamera));
 
              
@@ -98,11 +103,10 @@ public class Arkanoid extends BaseGameActivity {
 
             /* Calculate the coordinates for the face, so its centered on the camera. */
             final int centerX = (CAMERA_WIDTH - this.mPaddleTextureRegion.getWidth()) / 2;
-            final int centerY = (CAMERA_HEIGHT - this.mPaddleTextureRegion.getHeight()) / 4;
+            final int centerY = (700);
 
             /* Create the face and add it to the scene. */
             final Sprite paddle = new Sprite(centerX, centerY, this.mPaddleTextureRegion);
-            paddle.setRotation(90.0f);
             scene.getLastChild().attachChild(paddle);
 
             return scene;
