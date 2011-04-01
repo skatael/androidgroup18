@@ -24,18 +24,18 @@ public class Ball extends Sprite{
 	}
 	
 	@Override
-    protected void onManagedUpdate(final float pSecondsElapsed) {
-            if(this.mX < 0) {
-                    this.mPhysicsHandler.setVelocityX(ark.getVELOCITY());
-            } else if(this.mX + this.getWidth() > ark.getCAMERA_WIDTH()) {
-                    this.mPhysicsHandler.setVelocityX(-ark.getVELOCITY());
-            }
-
-            if(this.mY < 0) {
-                    this.mPhysicsHandler.setVelocityY(ark.getVELOCITY());
-            } else if(this.mY + this.getHeight() > ark.getCAMERA_HEIGHT()) {
-                    this.mPhysicsHandler.setVelocityY(-ark.getVELOCITY());
-            }
+    protected void onManagedUpdate(final float pSecondsElapsed){
+		if(this.mX < 0) {
+			this.mPhysicsHandler.setVelocityX(ark.getVELOCITY());
+			
+		}else if(this.mX + this.getWidth() > ark.getCAMERA_WIDTH()) {
+			this.mPhysicsHandler.setVelocityX(-ark.getVELOCITY());
+		}
+		if(this.mY < 0) {
+				this.mPhysicsHandler.setVelocityY(ark.getVELOCITY());
+		} else if(this.mY + this.getHeight() > ark.getCAMERA_HEIGHT()) {
+			this.mPhysicsHandler.setVelocityY(-ark.getVELOCITY());
+		}
 
             super.onManagedUpdate(pSecondsElapsed);
     }
