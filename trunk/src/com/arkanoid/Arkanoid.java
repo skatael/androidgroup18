@@ -2,15 +2,18 @@ package com.arkanoid;
 
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.camera.Camera;
+import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.engine.handler.physics.PhysicsHandler;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.engine.options.EngineOptions.ScreenOrientation;
 import org.anddev.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.background.ColorBackground;
+import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.entity.text.ChangeableText;
 import org.anddev.andengine.entity.util.FPSLogger;
+import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
@@ -18,7 +21,8 @@ import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
 
 
-public class Arkanoid extends BaseGameActivity {
+
+public class Arkanoid extends BaseGameActivity implements IOnSceneTouchListener{
 
         // ===========================================================
 
@@ -56,6 +60,8 @@ public class Arkanoid extends BaseGameActivity {
         //Paddle Textures
         private Texture pTexture;
         private TextureRegion mPaddleTextureRegion;
+        
+        private Paddle paddle;
         
         //Ball Textures
         private Texture bTexture;
@@ -119,9 +125,7 @@ public class Arkanoid extends BaseGameActivity {
             mBlockTextureRegion = TextureRegionFactory.createFromAsset(this.blTexture, this, "gfx/block.png", 0, 0);
       
 
-            this.mEngine.getTextureManager().loadTexture(this.pTexture);
-            this.mEngine.getTextureManager().loadTexture(this.bTexture);
-            this.mEngine.getTextureManager().loadTexture(this.blTexture);
+            this.mEngine.getTextureManager().loadTextures(this.pTexture,this.bTexture,this.blTexture);
 
         }
 
@@ -132,13 +136,14 @@ public class Arkanoid extends BaseGameActivity {
             
             final Scene scene = new Scene(1);
             scene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
+            scene.setOnSceneTouchListener(this);
 
             /* Calculate the coordinates for the face, so its centered on the camera. */
             final int centerX = (CAMERA_WIDTH - this.mPaddleTextureRegion.getWidth()) / 2;
             final int centerY = (700);
 
             /* Create the face and add it to the scene. */
-            final Paddle paddle = new Paddle(centerX, centerY, this.mPaddleTextureRegion);
+            this.paddle = new Paddle(centerX, centerY, this.mPaddleTextureRegion);
             final Ball ball = new Ball(224,584, this.mBallTextureRegion,this);
             final Block[] blocks= new Block[3];
             int xPos = 40;
@@ -152,10 +157,32 @@ public class Arkanoid extends BaseGameActivity {
             
             final PhysicsHandler physicsHandler = new PhysicsHandler(ball);
             ball.registerUpdateHandler(physicsHandler);
-            physicsHandler.setVelocity(VELOCITY, VELOCITY);
+            physicsHandler.setVelocity(0, VELOCITY);
             
             scene.getLastChild().attachChild(paddle);
             scene.getLastChild().attachChild(ball);
+            
+            //collision handeling
+            scene.registerUpdateHandler(new IUpdateHandler() {
+				
+				@Override
+				public void reset() {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onUpdate(float pSecondsElapsed) {
+					// TODO Auto-generated method stub
+					if(ball.collidesWith(paddle)){
+						physicsHandler.setVelocityY(-VELOCITY);
+					}
+					if((ball.collidesWith(blocks[0])|| ball.collidesWith(blocks[1]))||ball.collidesWith(blocks[2])){
+						physicsHandler.setVelocityY(VELOCITY);
+					}
+				}
+			});
+            	
             
             return scene;
 
@@ -165,6 +192,15 @@ public class Arkanoid extends BaseGameActivity {
  
 
         }
+       
+
+		@Override
+		public boolean onSceneTouchEvent(Scene pScene,
+				TouchEvent pSceneTouchEvent) {
+			paddle.setPosition(pSceneTouchEvent.getX() -(paddle.getWidth()/2), 700);
+			return true;
+		}
+
 
  
 
