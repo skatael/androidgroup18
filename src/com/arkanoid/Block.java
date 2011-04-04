@@ -10,6 +10,8 @@ public class Block extends Sprite{
 		
 		// TODO Auto-generated constructor stub
 	}
+	
+	
 	public float GetX(){
 		return this.getX();
 	}
