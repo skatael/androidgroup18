@@ -70,7 +70,10 @@ public class Arkanoid extends BaseGameActivity implements IOnSceneTouchListener{
         private Wall wWall;
         
         private Texture wTexture;
-        private TextureRegion mWallTextureRegion;
+        private TextureRegion mNWallTextureRegion;
+        private TextureRegion mSWallTextureRegion;
+        private TextureRegion mEWallTextureRegion;
+        private TextureRegion mWWallTextureRegion;
         
         //Ball Textures
         private Texture bTexture;
@@ -133,7 +136,12 @@ public class Arkanoid extends BaseGameActivity implements IOnSceneTouchListener{
             blTexture = new Texture(128, 32, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
             mBlockTextureRegion = TextureRegionFactory.createFromAsset(this.blTexture, this, "gfx/block.png", 0, 0);
       
-
+//            this.wTexture = new Texture(CAMERA_WIDTH, CAMERA_HEIGHT, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+//            this.mNWallTextureRegion = TextureRegionFactory.createFromAsset(this.wTexture, this, "gfx/horiwall.png", 0, 0);
+//            this.mSWallTextureRegion = TextureRegionFactory.createFromAsset(this.wTexture, this, "gfx/horiwall.png", 0, 0);
+//            this.mEWallTextureRegion = TextureRegionFactory.createFromAsset(this.wTexture, this, "gfx/vertwall.png", 0, 0);
+//            this.mWWallTextureRegion = TextureRegionFactory.createFromAsset(this.wTexture, this, "gfx/vertwall.png", 0, 0);
+//            
             this.mEngine.getTextureManager().loadTextures(this.pTexture,this.bTexture,this.blTexture);
 
         }
@@ -164,12 +172,21 @@ public class Arkanoid extends BaseGameActivity implements IOnSceneTouchListener{
             	scene.getLastChild().attachChild(blocks[i]);
             }
             
+//            this.nWall = new Wall(0, 0, this.mNWallTextureRegion);
+//            this.sWall = new Wall(0, CAMERA_HEIGHT-10, this.mSWallTextureRegion);
+//            this.eWall = new Wall(CAMERA_WIDTH-10, 0, this.mEWallTextureRegion);
+//            this.wWall = new Wall(0,0, this.mWWallTextureRegion);
+            
             final PhysicsHandler physicsHandler = new PhysicsHandler(ball);
             ball.registerUpdateHandler(physicsHandler);
             physicsHandler.setVelocity(0, VELOCITY);
             
             scene.getLastChild().attachChild(paddle);
             scene.getLastChild().attachChild(ball);
+//            scene.getLastChild().attachChild(nWall);
+//            scene.getLastChild().attachChild(sWall);
+//            scene.getLastChild().attachChild(eWall);
+//            scene.getLastChild().attachChild(wWall);
             
             //collision handeling
             scene.registerUpdateHandler(new IUpdateHandler() {
