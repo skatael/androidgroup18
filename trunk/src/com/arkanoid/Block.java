@@ -18,5 +18,8 @@ public class Block extends Sprite{
 	public float GetY(){
 		return this.getY();
 	}
+	public void gotHit(){
+		
+	}
 
 }
