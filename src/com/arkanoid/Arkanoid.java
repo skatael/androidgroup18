@@ -203,9 +203,13 @@ public class Arkanoid extends BaseGameActivity implements IOnSceneTouchListener{
 					if(ball.collidesWith(paddle)){
 						physicsHandler.setVelocityY(-VELOCITY);
 					}
-					if((ball.collidesWith(blocks[0])|| ball.collidesWith(blocks[1]))||ball.collidesWith(blocks[2])){
-						physicsHandler.setVelocityY(VELOCITY);
+					for (int i = 0; i <blocks.length;i++){
+						if(ball.collidesWith(blocks[i])){
+							physicsHandler.setVelocityY(VELOCITY);
+							blocks[i].gotHit();
+						}
 					}
+					
 				}
 			});
             	
