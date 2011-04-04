@@ -9,5 +9,10 @@ public class Wall extends Sprite{
 		super(pX, pY, pTextureRegion);
 		// TODO Auto-generated constructor stub
 	}
-
+	public float GetX(){
+		return this.getX();
+	}
+	public float GetY(){
+		return this.getY();
+	}
 }

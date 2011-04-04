@@ -63,6 +63,15 @@ public class Arkanoid extends BaseGameActivity implements IOnSceneTouchListener{
         
         private Paddle paddle;
         
+        //wall textures
+        private Wall nWall;
+        private Wall sWall;
+        private Wall eWall;
+        private Wall wWall;
+        
+        private Texture wTexture;
+        private TextureRegion mWallTextureRegion;
+        
         //Ball Textures
         private Texture bTexture;
         private TextureRegion mBallTextureRegion;
