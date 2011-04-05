@@ -84,7 +84,7 @@ public class Arkanoid extends BaseGameActivity implements IOnSceneTouchListener{
         private TextureRegion mBlockTextureRegion;
         
         private int level = 0;
-        private String blockString;
+        private int[] blockArray;
         
         
         //Block textures
@@ -165,39 +165,38 @@ public class Arkanoid extends BaseGameActivity implements IOnSceneTouchListener{
             /* Create the face and add it to the scene. */
             this.paddle = new Paddle(centerX, centerY, this.mPaddleTextureRegion);
             final Ball ball = new Ball(224,584, this.mBallTextureRegion,this);
-            final Block[] blocks= new Block[3];
+            final Block[] blocks= new Block[6];
             int xPos = 40;
             int yPos = 50;
             
-//            for(int i = 0; i <blocks.length;i++){
-//            	blocks[i] = new Block(xPos, yPos, this.mBlockTextureRegion);
-//            	xPos+=128;
-//            	scene.getLastChild().attachChild(blocks[i]);
-//            }
+            for(int i = 0; i <blocks.length;i++){
+            	blocks[i] = new Block(xPos, yPos, this.mBlockTextureRegion);
+            	xPos+=128;
+            	scene.getLastChild().attachChild(blocks[i]);
+            }
             
             //sette opp blocker for en gitt level
             
-            level = 2;
-            blockString = BlockLayout.MakeBlocks(level);
-            int i = 0;
-
-            while(i >= blockString.length()){
-            	if(blockString.charAt(i) == 1){
-            		blocks[i] = new Block(xPos, yPos, this.mBlockTextureRegion);
-            		xPos+=128;
-            		scene.getLastChild().attachChild(blocks[i]);
-            		i++;
-            	}else if(blockString.charAt(i) == 2){
-            		blocks[i] = new Block(xPos, yPos, this.mBlockTextureRegion);
-            		xPos+=128;
-            		scene.getLastChild().attachChild(blocks[i]);
-            		i++;
-            	}else if(blockString.charAt(i) == 0){
-            		i++;
-            		yPos+=32;
-            		xPos = 40;
-            	}
-            }
+//            level = 2;
+//            blockArray = BlockLayout.MakeBlocks(level);
+//            int j = 0;
+//
+//            for(int i = 0;i <= blockArray.length; i++){
+//            	if(blockArray[i] == 1){
+//            		blocks[j] = new Block(xPos, yPos, this.mBlockTextureRegion);
+//            		xPos+=128;
+//            		scene.getLastChild().attachChild(blocks[j]);
+//            		j++;
+//            	}else if(blockArray[i] == 2){
+//            		blocks[j] = new Block(xPos, yPos, this.mBlockTextureRegion);
+//            		xPos+=128;
+//            		scene.getLastChild().attachChild(blocks[j]);
+//            		j++;
+//            	}else if(blockArray[i] == 0){
+//            		yPos+=32;
+//            		xPos = 40;
+//            	}
+//            }
             
             
 //            this.nWall = new Wall(0, 0, this.mNWallTextureRegion);
