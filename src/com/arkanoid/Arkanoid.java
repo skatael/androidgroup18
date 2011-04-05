@@ -83,6 +83,9 @@ public class Arkanoid extends BaseGameActivity implements IOnSceneTouchListener{
         private Texture blTexture;
         private TextureRegion mBlockTextureRegion;
         
+        private int level = 0;
+        private String blockString;
+        
         
         //Block textures
 
@@ -166,11 +169,36 @@ public class Arkanoid extends BaseGameActivity implements IOnSceneTouchListener{
             int xPos = 40;
             int yPos = 50;
             
-            for(int i = 0; i <blocks.length;i++){
-            	blocks[i] = new Block(xPos, yPos, this.mBlockTextureRegion);
-            	xPos+=128;
-            	scene.getLastChild().attachChild(blocks[i]);
+//            for(int i = 0; i <blocks.length;i++){
+//            	blocks[i] = new Block(xPos, yPos, this.mBlockTextureRegion);
+//            	xPos+=128;
+//            	scene.getLastChild().attachChild(blocks[i]);
+//            }
+            
+            //sette opp blocker for en gitt level
+            
+            level = 2;
+            blockString = BlockLayout.MakeBlocks(level);
+            int i = 0;
+
+            while(i >= blockString.length()){
+            	if(blockString.charAt(i) == 1){
+            		blocks[i] = new Block(xPos, yPos, this.mBlockTextureRegion);
+            		xPos+=128;
+            		scene.getLastChild().attachChild(blocks[i]);
+            		i++;
+            	}else if(blockString.charAt(i) == 2){
+            		blocks[i] = new Block(xPos, yPos, this.mBlockTextureRegion);
+            		xPos+=128;
+            		scene.getLastChild().attachChild(blocks[i]);
+            		i++;
+            	}else if(blockString.charAt(i) == 0){
+            		i++;
+            		yPos+=32;
+            		xPos = 40;
+            	}
             }
+            
             
 //            this.nWall = new Wall(0, 0, this.mNWallTextureRegion);
 //            this.sWall = new Wall(0, CAMERA_HEIGHT-10, this.mSWallTextureRegion);
@@ -217,7 +245,9 @@ public class Arkanoid extends BaseGameActivity implements IOnSceneTouchListener{
             return scene;
 
         }
-        @Override
+      
+
+		@Override
         public void onLoadComplete() {
  
 
