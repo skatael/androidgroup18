@@ -6,13 +6,17 @@ public class BlockLayout {
 //	1 = crushable
 //	2 = uncrushable
 //	0 = line break for blockene
-	public static String MakeBlocks(int level) {
+	private static int[] blocks;
+	public static int[] MakeBlocks(int level) {
+		
 		
 		if(level == 1){
-			return "1,1,1,1,0,1,1,1,1";
+			int[] blocks = {1,1,1,0,1,1,1};
+			return blocks;
 		}
 		else if(level == 2){
-			return "1,1,1,1,0,2,1,1,2";
+			int[] blocks = {1,1,1,0,1,2,1};
+			return blocks;
 		}
 		
 		return null;
