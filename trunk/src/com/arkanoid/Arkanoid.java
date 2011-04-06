@@ -1,6 +1,7 @@
 package com.arkanoid;
 
 import java.io.IOException;
+import java.util.Stack;
 
 import org.anddev.andengine.audio.music.Music;
 import org.anddev.andengine.audio.music.MusicFactory;
@@ -11,6 +12,7 @@ import org.anddev.andengine.engine.options.EngineOptions.ScreenOrientation;
 import org.anddev.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.background.ColorBackground;
+import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.entity.util.FPSLogger;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
@@ -35,26 +37,8 @@ public class Arkanoid extends BaseGameActivity {
         
         private static final float VELOCITY = 100.0f;
         
-        private BlockController blockController;
-        
-        private Music mMusic;
-        
-        private int lives;
-        private int score;
-
-        
-        public float getVELOCITY(){
-        	return VELOCITY;
-        }
-        
-        public int getCAMERA_WIDTH(){
-        	return CAMERA_WIDTH;
-        }
-        
-        public int getCAMERA_HEIGHT(){
-        	return CAMERA_HEIGHT;
-        }
-
+        private static final int LIVES = 4;
+       
 
         // ===========================================================
 
@@ -62,21 +46,22 @@ public class Arkanoid extends BaseGameActivity {
 
         // ===========================================================
 
- 
-
         private Camera mCamera;
         
         //Paddle Textures
         private Texture pTexture;
         private TextureRegion mPaddleTextureRegion;
         
-        private Paddle paddle;
-        
+        //private Paddle paddle;
+        private BlockController blockController;
         
         //Ball Textures
         private Texture bTexture;
         private TextureRegion mBallTextureRegion;
         
+        private Music mMusic;
+        
+        private ScoreBoard sb;
         
 
        // ===========================================================
@@ -121,6 +106,7 @@ public class Arkanoid extends BaseGameActivity {
         public void onLoadResources() {
             // texturene må settes i sine respektive klasser
             this.pTexture = new Texture(128, 32, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+            
             this.mPaddleTextureRegion = TextureRegionFactory.createFromAsset(this.pTexture, this, "gfx/paddle.png", 0, 0);
             
             bTexture = new Texture(32,32, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
@@ -129,20 +115,16 @@ public class Arkanoid extends BaseGameActivity {
 			this.mEngine.getTextureManager().loadTextures(this.pTexture,this.bTexture);  
             blockController = new BlockController(this);
             
+            //Adding music asset
             MusicFactory.setAssetBasePath("mfx/");
             try {
-                    this.mMusic = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "music.ogg");
-                    this.mMusic.setLooping(true);
-                    Log.i("Android music", "Wohoo");
+            	this.mMusic = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "music.ogg");
+            	this.mMusic.setLooping(true);
             } catch (final IOException e) {
-                Log.i("Android music", "nooooo");
-
             	e.printStackTrace();
             }
 
-            this.lives = 3;
             
-    		
             this.mEngine.getTextureManager().loadTextures(this.pTexture,this.bTexture,this.bTexture);
 
         }
@@ -161,6 +143,12 @@ public class Arkanoid extends BaseGameActivity {
             final int centerY = (700);
 
             /* Create the face and add it to the scene. */
+            
+            //attach lives
+            
+            sb = new ScoreBoard(scene, LIVES, this.getCAMERA_WIDTH(), 0);
+            
+            
             //this.paddle = new Paddle(centerX, centerY, this.mPaddleTextureRegion);
             //bug? touch area coordinates not the same as screen coordinates.
             //Workaround set value static for now
@@ -185,6 +173,7 @@ public class Arkanoid extends BaseGameActivity {
             	scene.getLastChild().attachChild(blocks[i]);
             }
             
+            
             //this.mMusic.play();
             return scene;
 
@@ -198,32 +187,99 @@ public class Arkanoid extends BaseGameActivity {
         }
        
 
-		
-
-
- 
 
         // ===========================================================
 
         // Methods
 
         // ===========================================================
+		
+		public float getVELOCITY(){
+        	return VELOCITY;
+        }
+        
+        public int getCAMERA_WIDTH(){
+        	return CAMERA_WIDTH;
+        }
+        
+        public int getCAMERA_HEIGHT(){
+        	return CAMERA_HEIGHT;
+        }
+		
 		public void die(){
-			this.lives = this.lives -1;
-			if (this.lives == 0){
-				Log.i("Arkanoid", "Game over");
-				Intent hs = new Intent(this, HighscoresView.class);
-				startActivity(hs);
-				
-			}
+			this.sb.die();
 		}
 		
-
         // ===========================================================
 
         // Inner and Anonymous Classes
 
         // ===========================================================
 
+		private class ScoreBoard {
+			
+			private int lives;
+			private int score;
+			private Scene scene;
+			private Stack<Sprite> livesStack;
+			private int xpos, ypos;
+			
+			public ScoreBoard(Scene scene, int lives, int screenXpos, int screenYpos){
+				this.scene = scene;
+				this.lives = lives;
+				this.xpos = screenXpos;
+				this.ypos = screenYpos;
+				displayLives(this.scene, this.lives);
+			}
+			
+			public void displayLives(Scene scene, int numLives){
+				this.livesStack = new Stack<Sprite>();
+	            
+	            for (int i = 0; i<this.lives; i++){
+	            	this.livesStack.push( new Sprite((this.xpos-mBallTextureRegion.getWidth())-i*mBallTextureRegion.getWidth(), this.ypos, mBallTextureRegion));
+	            	scene.getLastChild().attachChild(this.livesStack.peek());
+	            }
+			}
+			
+			public void decreaseLife(){
+				runOnUpdateThread(new Runnable()
+				{
+
+					@Override
+					public void run() {
+						scene.getLastChild().detachChild(livesStack.pop());
+						
+					}
+					
+				});
+			}
+			
+			public void increaseLife(){
+				runOnUpdateThread(new Runnable()
+				{
+
+					@Override
+					public void run() {
+						livesStack.push( new Sprite((livesStack.peek().getX()-mBallTextureRegion.getWidth()), ypos, mBallTextureRegion));
+						scene.getLastChild().attachChild(livesStack.peek());
+						
+					}
+					
+				});
+			}
+			
+			public void die(){
+				this.lives = this.lives - 1;
+				this.decreaseLife();
+				if (this.lives == 0){
+					Log.i("Arkanoid", "Game over");
+					
+					
+					
+				}
+			}
+			
+			
+		}
 
 }
