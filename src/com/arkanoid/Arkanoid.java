@@ -1,5 +1,9 @@
 package com.arkanoid;
 
+import java.io.IOException;
+
+import org.anddev.andengine.audio.music.Music;
+import org.anddev.andengine.audio.music.MusicFactory;
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.EngineOptions;
@@ -13,6 +17,9 @@ import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
+
+import android.content.Intent;
+import android.util.Log;
 
 
 
@@ -29,6 +36,12 @@ public class Arkanoid extends BaseGameActivity {
         private static final float VELOCITY = 100.0f;
         
         private BlockController blockController;
+        
+        private Music mMusic;
+        
+        private int lives;
+        private int score;
+
         
         public float getVELOCITY(){
         	return VELOCITY;
@@ -58,10 +71,14 @@ public class Arkanoid extends BaseGameActivity {
         private TextureRegion mPaddleTextureRegion;
         
         private Paddle paddle;
-                
+        
+        
         //Ball Textures
         private Texture bTexture;
         private TextureRegion mBallTextureRegion;
+        
+        
+
        // ===========================================================
 
         // Constructors
@@ -93,7 +110,7 @@ public class Arkanoid extends BaseGameActivity {
 //            mCamera.
             
             return new Engine(new EngineOptions(true, ScreenOrientation.PORTRAIT, 
-                    new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.mCamera));
+                    new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.mCamera).setNeedsMusic(true));
 
              
         }
@@ -102,14 +119,31 @@ public class Arkanoid extends BaseGameActivity {
 
         @Override
         public void onLoadResources() {
-            // texturene mï¿½ settes i sine respektive klasser
+            // texturene mŒ settes i sine respektive klasser
             this.pTexture = new Texture(128, 32, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
             this.mPaddleTextureRegion = TextureRegionFactory.createFromAsset(this.pTexture, this, "gfx/paddle.png", 0, 0);
             
             bTexture = new Texture(32,32, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
             mBallTextureRegion = TextureRegionFactory.createFromAsset(this.bTexture, this, "gfx/ball.png", 0, 0);
-            this.mEngine.getTextureManager().loadTextures(this.pTexture,this.bTexture);
+            
+			this.mEngine.getTextureManager().loadTextures(this.pTexture,this.bTexture);  
             blockController = new BlockController(this);
+            
+            MusicFactory.setAssetBasePath("mfx/");
+            try {
+                    this.mMusic = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "music.ogg");
+                    this.mMusic.setLooping(true);
+                    Log.i("Android music", "Wohoo");
+            } catch (final IOException e) {
+                Log.i("Android music", "nooooo");
+
+            	e.printStackTrace();
+            }
+
+            this.lives = 3;
+            
+    		
+            this.mEngine.getTextureManager().loadTextures(this.pTexture,this.bTexture,this.bTexture);
 
         }
 
@@ -136,26 +170,22 @@ public class Arkanoid extends BaseGameActivity {
             scene.setOnSceneTouchListener(paddle);
             
             //final Ball ball = new Ball(224,584, this.mBallTextureRegion,this);
-            final BallView ball = new BallView(200, 300, this.mBallTextureRegion, this);
+            final BallView ball = new BallView(200, 300, this.mBallTextureRegion, this, centerY);
             
             //add listener to ball to check for collision
             //listener must extend EntityView
             ball.addListener(paddle);
            
-            
-            
-            
             scene.getLastChild().attachChild(paddle);
             scene.getLastChild().attachChild(ball);
-          
+    
             final Block[] blocks = blockController.getBlocks();
             for(int i = 0; i <blocks.length;i++){
             	
             	scene.getLastChild().attachChild(blocks[i]);
             }
-           
             
-            
+            //this.mMusic.play();
             return scene;
 
         }
@@ -178,8 +208,16 @@ public class Arkanoid extends BaseGameActivity {
         // Methods
 
         // ===========================================================
-
- 
+		public void die(){
+			this.lives = this.lives -1;
+			if (this.lives == 0){
+				Log.i("Arkanoid", "Game over");
+				Intent hs = new Intent(this, HighscoresView.class);
+				startActivity(hs);
+				
+			}
+		}
+		
 
         // ===========================================================
 
