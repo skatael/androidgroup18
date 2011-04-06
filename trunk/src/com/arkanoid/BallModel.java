@@ -15,8 +15,9 @@ public class BallModel {
 	private float velocity;
 	private PhysicsHandler mPhysicsHandler;
 	private List<EntityView> entityListeners;
+	private int touchArea;
 	
-	public BallModel(Arkanoid ark, float x, float y, PhysicsHandler mPhysicsHandler, EntityView entity) {
+	public BallModel(Arkanoid ark, float x, float y, PhysicsHandler mPhysicsHandler, EntityView entity, int touchArea) {
 		this.setArk(ark);
 		this.setX(x);
 		this.setY(y);
@@ -24,6 +25,7 @@ public class BallModel {
 		this.setVelocity(ark.getVELOCITY());
 		this.setEntityView(entity);
 		this.entityListeners = new ArrayList<EntityView>();
+		this.setTouchArea(touchArea);
 	}
 	
 	public Arkanoid getArk() {
@@ -78,6 +80,14 @@ public class BallModel {
 	
 	public void delListener(Sprite Listener) {
 		this.entityListeners.remove(Listener);
+	}
+
+	public int getTouchArea() {
+		return touchArea;
+	}
+
+	private void setTouchArea(int touchArea) {
+		this.touchArea = touchArea;
 	}
 	
 	
