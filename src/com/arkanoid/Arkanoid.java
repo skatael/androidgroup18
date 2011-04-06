@@ -2,18 +2,12 @@ package com.arkanoid;
 
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.engine.handler.IUpdateHandler;
-import org.anddev.andengine.engine.handler.physics.PhysicsHandler;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.engine.options.EngineOptions.ScreenOrientation;
 import org.anddev.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.background.ColorBackground;
-import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
-import org.anddev.andengine.entity.sprite.Sprite;
-import org.anddev.andengine.entity.text.ChangeableText;
 import org.anddev.andengine.entity.util.FPSLogger;
-import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
@@ -33,6 +27,8 @@ public class Arkanoid extends BaseGameActivity {
         private static final int CAMERA_HEIGHT = 800;
         
         private static final float VELOCITY = 100.0f;
+        
+        private BlockController blockController;
         
         public float getVELOCITY(){
         	return VELOCITY;
@@ -62,33 +58,10 @@ public class Arkanoid extends BaseGameActivity {
         private TextureRegion mPaddleTextureRegion;
         
         private Paddle paddle;
-        
-        //wall textures
-        private Wall nWall;
-        private Wall sWall;
-        private Wall eWall;
-        private Wall wWall;
-        
-        private Texture wTexture;
-        private TextureRegion mNWallTextureRegion;
-        private TextureRegion mSWallTextureRegion;
-        private TextureRegion mEWallTextureRegion;
-        private TextureRegion mWWallTextureRegion;
-        
+                
         //Ball Textures
         private Texture bTexture;
         private TextureRegion mBallTextureRegion;
-        
-        //Block Textures
-        private Texture blTexture;
-        private TextureRegion mBlockTextureRegion;
-        
-        private int level = 0;
-        private int[] blockArray;
-        
-        
-        //Block textures
-
        // ===========================================================
 
         // Constructors
@@ -129,23 +102,14 @@ public class Arkanoid extends BaseGameActivity {
 
         @Override
         public void onLoadResources() {
-            // texturene må settes i sine respektive klasser
+            // texturene mï¿½ settes i sine respektive klasser
             this.pTexture = new Texture(128, 32, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
             this.mPaddleTextureRegion = TextureRegionFactory.createFromAsset(this.pTexture, this, "gfx/paddle.png", 0, 0);
             
             bTexture = new Texture(32,32, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
             mBallTextureRegion = TextureRegionFactory.createFromAsset(this.bTexture, this, "gfx/ball.png", 0, 0);
-            
-            blTexture = new Texture(128, 32, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-            mBlockTextureRegion = TextureRegionFactory.createFromAsset(this.blTexture, this, "gfx/block.png", 0, 0);
-      
-//            this.wTexture = new Texture(CAMERA_WIDTH, CAMERA_HEIGHT, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-//            this.mNWallTextureRegion = TextureRegionFactory.createFromAsset(this.wTexture, this, "gfx/horiwall.png", 0, 0);
-//            this.mSWallTextureRegion = TextureRegionFactory.createFromAsset(this.wTexture, this, "gfx/horiwall.png", 0, 0);
-//            this.mEWallTextureRegion = TextureRegionFactory.createFromAsset(this.wTexture, this, "gfx/vertwall.png", 0, 0);
-//            this.mWWallTextureRegion = TextureRegionFactory.createFromAsset(this.wTexture, this, "gfx/vertwall.png", 0, 0);
-//            
-            this.mEngine.getTextureManager().loadTextures(this.pTexture,this.bTexture,this.blTexture);
+            this.mEngine.getTextureManager().loadTextures(this.pTexture,this.bTexture);
+            blockController = new BlockController(this);
 
         }
 
@@ -180,82 +144,17 @@ public class Arkanoid extends BaseGameActivity {
            
             
             
-            final Block[] blocks= new Block[6];
-            int xPos = 40;
-            int yPos = 50;
-            
-            for(int i = 0; i <blocks.length;i++){
-            	blocks[i] = new Block(xPos, yPos, this.mBlockTextureRegion);
-            	xPos+=128;
-            	scene.getLastChild().attachChild(blocks[i]);
-            }
-            
-            //sette opp blocker for en gitt level
-            
-//            level = 2;
-//            blockArray = BlockLayout.MakeBlocks(level);
-//            int j = 0;
-//
-//            for(int i = 0;i <= blockArray.length; i++){
-//            	if(blockArray[i] == 1){
-//            		blocks[j] = new Block(xPos, yPos, this.mBlockTextureRegion);
-//            		xPos+=128;
-//            		scene.getLastChild().attachChild(blocks[j]);
-//            		j++;
-//            	}else if(blockArray[i] == 2){
-//            		blocks[j] = new Block(xPos, yPos, this.mBlockTextureRegion);
-//            		xPos+=128;
-//            		scene.getLastChild().attachChild(blocks[j]);
-//            		j++;
-//            	}else if(blockArray[i] == 0){
-//            		yPos+=32;
-//            		xPos = 40;
-//            	}
-//            }
-            
-            
-//            this.nWall = new Wall(0, 0, this.mNWallTextureRegion);
-//            this.sWall = new Wall(0, CAMERA_HEIGHT-10, this.mSWallTextureRegion);
-//            this.eWall = new Wall(CAMERA_WIDTH-10, 0, this.mEWallTextureRegion);
-//            this.wWall = new Wall(0,0, this.mWWallTextureRegion);
-            
-            //final PhysicsHandler physicsHandler = new PhysicsHandler(ball);
-            //ball.registerUpdateHandler(physicsHandler);
-            //physicsHandler.setVelocity(0, VELOCITY);
             
             scene.getLastChild().attachChild(paddle);
             scene.getLastChild().attachChild(ball);
-//            scene.getLastChild().attachChild(nWall);
-//            scene.getLastChild().attachChild(sWall);
-//            scene.getLastChild().attachChild(eWall);
-//            scene.getLastChild().attachChild(wWall);
+          
+            final Block[] blocks = blockController.getBlocks();
+            for(int i = 0; i <blocks.length;i++){
+            	
+            	scene.getLastChild().attachChild(blocks[i]);
+            }
+           
             
-            //collision handeling
-            /*
-            scene.registerUpdateHandler(new IUpdateHandler() {
-				
-				@Override
-				public void reset() {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void onUpdate(float pSecondsElapsed) {
-					// TODO Auto-generated method stub
-					if(ball.collidesWith(paddle)){
-						physicsHandler.setVelocityY(-VELOCITY);
-					}
-					for (int i = 0; i <blocks.length;i++){
-						if(ball.collidesWith(blocks[i])){
-							physicsHandler.setVelocityY(VELOCITY);
-							blocks[i].gotHit();
-						}
-					}
-					
-				}
-			});
-            */	
             
             return scene;
 
