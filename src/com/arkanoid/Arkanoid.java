@@ -22,7 +22,7 @@ import org.anddev.andengine.ui.activity.BaseGameActivity;
 
 
 
-public class Arkanoid extends BaseGameActivity implements IOnSceneTouchListener{
+public class Arkanoid extends BaseGameActivity {
 
         // ===========================================================
 
@@ -156,15 +156,30 @@ public class Arkanoid extends BaseGameActivity implements IOnSceneTouchListener{
             
             final Scene scene = new Scene(1);
             scene.setBackground(new ColorBackground(0.09804f, 0.6274f, 0.8784f));
-            scene.setOnSceneTouchListener(this);
+            //scene.setOnSceneTouchListener(this);
 
             /* Calculate the coordinates for the face, so its centered on the camera. */
             final int centerX = (CAMERA_WIDTH - this.mPaddleTextureRegion.getWidth()) / 2;
             final int centerY = (700);
 
             /* Create the face and add it to the scene. */
-            this.paddle = new Paddle(centerX, centerY, this.mPaddleTextureRegion);
-            final Ball ball = new Ball(224,584, this.mBallTextureRegion,this);
+            //this.paddle = new Paddle(centerX, centerY, this.mPaddleTextureRegion);
+            //bug? touch area coordinates not the same as screen coordinates.
+            //Workaround set value static for now
+            final int touchArea = (440);
+            final PaddleView paddle = new PaddleView(centerX,centerY,this.mPaddleTextureRegion,touchArea, this);
+            //paddleview listens to touch events
+            scene.setOnSceneTouchListener(paddle);
+            
+            //final Ball ball = new Ball(224,584, this.mBallTextureRegion,this);
+            final BallView ball = new BallView(200, 300, this.mBallTextureRegion, this);
+            
+            //add listener to ball to check for collision
+            //listener must extend EntityView
+            ball.addListener(paddle);
+           
+            
+            
             final Block[] blocks= new Block[6];
             int xPos = 40;
             int yPos = 50;
@@ -204,9 +219,9 @@ public class Arkanoid extends BaseGameActivity implements IOnSceneTouchListener{
 //            this.eWall = new Wall(CAMERA_WIDTH-10, 0, this.mEWallTextureRegion);
 //            this.wWall = new Wall(0,0, this.mWWallTextureRegion);
             
-            final PhysicsHandler physicsHandler = new PhysicsHandler(ball);
-            ball.registerUpdateHandler(physicsHandler);
-            physicsHandler.setVelocity(0, VELOCITY);
+            //final PhysicsHandler physicsHandler = new PhysicsHandler(ball);
+            //ball.registerUpdateHandler(physicsHandler);
+            //physicsHandler.setVelocity(0, VELOCITY);
             
             scene.getLastChild().attachChild(paddle);
             scene.getLastChild().attachChild(ball);
@@ -216,6 +231,7 @@ public class Arkanoid extends BaseGameActivity implements IOnSceneTouchListener{
 //            scene.getLastChild().attachChild(wWall);
             
             //collision handeling
+            /*
             scene.registerUpdateHandler(new IUpdateHandler() {
 				
 				@Override
@@ -239,7 +255,7 @@ public class Arkanoid extends BaseGameActivity implements IOnSceneTouchListener{
 					
 				}
 			});
-            	
+            */	
             
             return scene;
 
@@ -253,12 +269,7 @@ public class Arkanoid extends BaseGameActivity implements IOnSceneTouchListener{
         }
        
 
-		@Override
-		public boolean onSceneTouchEvent(Scene pScene,
-				TouchEvent pSceneTouchEvent) {
-			paddle.setPosition(pSceneTouchEvent.getX() -(paddle.getWidth()/2), 700);
-			return true;
-		}
+		
 
 
  
