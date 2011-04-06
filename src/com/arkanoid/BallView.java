@@ -9,10 +9,10 @@ public class BallView extends EntityView {
 	private BallModel entityModel;
 	private BallController entityController;
 	
-	public BallView(float pX, float pY, TextureRegion pTextureRegion, Arkanoid ark) {
+	public BallView(float pX, float pY, TextureRegion pTextureRegion, Arkanoid ark, int touchArea) {
 		super(pX, pY, pTextureRegion);
 		
-		this.setEntityModel(new BallModel(ark, pX, pY, new PhysicsHandler(this), this));
+		this.setEntityModel(new BallModel(ark, pX, pY, new PhysicsHandler(this), this, touchArea));
 		this.setEntityController(new BallController(this.getEntityModel()));
 		
 		this.registerUpdateHandler(this.getEntityModel().getmPhysicsHandler());
