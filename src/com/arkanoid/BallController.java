@@ -4,11 +4,23 @@ import org.anddev.andengine.entity.sprite.Sprite;
 
 import android.util.Log;
 
+/**
+ * 
+ * @author matsgora
+ * Handles the ball logic
+ */
 
 public class BallController {
 
+	/**
+	 * Model
+	 */
 	private BallModel entityModel;
 	
+	/**
+	 * 
+	 @param entityModel the model for this controller
+	 */
 	public BallController(BallModel entityModel) {
 		this.setEntityModel(entityModel);
 		this.getEntityModel().getmPhysicsHandler().setVelocity(-this.getEntityModel().getVelocity(), this.getEntityModel().getVelocity());
@@ -21,6 +33,10 @@ public class BallController {
 		this.entityModel = entityModel;
 	}
 
+	/**
+	 * Handles the ball movement on engine updates. This method checks for collisions with its 
+	 * listeners.
+	 */
 	public void update(){
 		
 		if (this.getEntityModel().getEntityView().getY() > this.getEntityModel().getTouchArea()){
@@ -48,6 +64,7 @@ public class BallController {
 			return;
 		}
 		
+		//check for collisions with listeners
 		for (EntityView entity: this.getEntityModel().getEntityListeners()){
 			int[] values = entity.collides(this.getEntityModel().getEntityView());
 			this.getEntityModel().getmPhysicsHandler().setVelocityX(values[0]*this.getEntityModel().getmPhysicsHandler().getVelocityX());

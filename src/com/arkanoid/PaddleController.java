@@ -1,10 +1,22 @@
 package com.arkanoid;
 
+/**
+ * 
+ @author matsgora
+ * Handles the paddle logic
+ */
 
 public class PaddleController {
 
+	/**
+	 * Model
+	 */
 	private PaddleModel entityModel;
 	
+	/**
+	 * 
+	 @param Model model for this controller
+	 */
 	public PaddleController(PaddleModel Model) {
 		super();
 		this.setEntityModel(Model);
@@ -18,6 +30,11 @@ public class PaddleController {
 		this.entityModel = entityModel;
 	}
 
+	/**
+	 * Handles the movement and updates the new position in the model.
+	 @param dx change in x direction. 
+	 */
+	
 	public void movementHandler(float dx){
 		float newX = this.getEntityModel().getX()+dx;
 		
@@ -31,6 +48,10 @@ public class PaddleController {
 		}	
 	}
 
+	/**
+	 @see EntityView
+	 */
+	
 	public int[] collides(EntityView view){
 		int[] returnvalues = {1, 1};
 		if (this.getEntityModel().getView().collidesWith(view)){

@@ -4,11 +4,33 @@ import org.anddev.andengine.engine.handler.physics.PhysicsHandler;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
+/**
+ * 
+ @author matsgora
+ *Returns the View of the ball. 
+ */
+
 public class BallView extends EntityView {
 	
+	/**
+	 * Model
+	 */
 	private BallModel entityModel;
+	/**
+	 * Controller
+	 */
 	private BallController entityController;
 	
+	
+	/**
+	 * Instantiate the BallView, BallModel and BallController
+	 * 
+	 @param pX X placement in screen
+	 @param pY Y placement in screen
+	 @param pTextureRegion
+	 @param ark Refer to parent game
+	 @param touchArea ?
+	 */
 	public BallView(float pX, float pY, TextureRegion pTextureRegion, Arkanoid ark, int touchArea) {
 		super(pX, pY, pTextureRegion);
 		
@@ -34,20 +56,37 @@ public class BallView extends EntityView {
 		this.entityController = entityController;
 	}
 	
+	/**
+	 * 
+	 @see BallModel
+	 */
 	public void addListener(EntityView Listener){
 		this.getEntityModel().addListeners(Listener);
 	}
 	
+	/**
+	 * 
+	 @see BallModel
+	 */
 	public void delListener(EntityView Listener){
 		this.getEntityModel().delListener(Listener);
 	}
 	
+	
+	/**
+	 * Method called by andengine on new tick. Ball physics handed over to the controller.
+	 @see PaddleController PaddleController.update()
+	 */
 	@Override
     protected void onManagedUpdate(final float pSecondsElapsed) { 
-			this.getEntityController().update();
-            super.onManagedUpdate(pSecondsElapsed);
+        super.onManagedUpdate(pSecondsElapsed);
+		this.getEntityController().update();
     }
 
+	/**
+	 * This method is not used here
+	 @see EntityView
+	 */
 	@Override
 	public int[] collides(EntityView view) {
 		// TODO Auto-generated method stub
