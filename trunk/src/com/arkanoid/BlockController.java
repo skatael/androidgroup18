@@ -20,6 +20,8 @@ public class BlockController {
 		blTexture = new Texture(128, 32, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
         mBlockTextureRegion = TextureRegionFactory.createFromAsset(this.blTexture, ark, "gfx/block.png", 0, 0);
         ark.getEngine().getTextureManager().loadTexture(this.blTexture);
+        removeBlock();
+        
         
         blocks = makeBlocks(); 
   
@@ -39,11 +41,11 @@ public class BlockController {
 
         for(int i = 0;i < blockArray.length; i++){
         	if(blockArray[i] == 1){
-        		blocks[j] = new Block(xPos, yPos, this.mBlockTextureRegion);
+        		blocks[j] = new Block(xPos, yPos, this.mBlockTextureRegion, ark);
         		xPos+=128;
         		j++;
         	}else if(blockArray[i] == 2){
-        		blocks[j] = new Block(xPos, yPos, this.mBlockTextureRegion);
+        		blocks[j] = new Block(xPos, yPos, this.mBlockTextureRegion, ark);
         		xPos+=128;
         		j++;
         	}else if(blockArray[i] == 0){
@@ -56,6 +58,28 @@ public class BlockController {
 		return blocks;
 	}
 	
+	public void removeBlock(){
+
+		ark.runOnUpdateThread(new Runnable() {
+            @Override
+            public void run() {
+                    /* Now it is save to remove the entity! */
+            	for (int i = 0; i < blocks.length; i++) {
+					if(blocks[i].getDestroy()){
+						ark.getEngine().getScene().getLastChild().detachChild(blocks[i]);
+					}
+				}
+            	
+            	
+            	
+        			
+        			
+        	}
+            
+		});
+		
+	}
+
 	public Block[] getBlocks(){
 		return blocks;
 	}
