@@ -111,7 +111,7 @@ public class Arkanoid extends BaseGameActivity {
 
         @Override
         public void onLoadResources() {
-            // texturene mŒ settes i sine respektive klasser
+            // texturene mï¿½ settes i sine respektive klasser
             this.pTexture = new Texture(128, 32, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
             
             this.mPaddleTextureRegion = TextureRegionFactory.createFromAsset(this.pTexture, this, "gfx/paddle.png", 0, 0);
@@ -358,6 +358,10 @@ public class Arkanoid extends BaseGameActivity {
 			
 			
 			
+		}
+		
+		public BlockController getBlockController(){
+			return blockController;
 		}
 
 }
