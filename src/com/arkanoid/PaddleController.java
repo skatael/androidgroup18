@@ -55,7 +55,12 @@ public class PaddleController {
 	public int[] collides(EntityView view){
 		int[] returnvalues = {1, 1};
 		if (this.getEntityModel().getView().collidesWith(view)){
-			returnvalues[1] = -1;
+			if((entityModel.getArk().getBallView().getY() < (entityModel.getView().getY() + entityModel.getView().getHeight()))&&(entityModel.getArk().getBallView().getY()>(entityModel.getView().getY()+entityModel.getArk().getBallView().getHeight()))){
+				returnvalues[0] = -1;
+			}else{
+				returnvalues[1] = -1;
+			}
+			
 		}
 		return returnvalues;
 	}
