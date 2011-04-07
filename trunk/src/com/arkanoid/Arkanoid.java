@@ -233,7 +233,7 @@ public class Arkanoid extends BaseGameActivity {
 			public void displayLives(Scene scene, int numLives){
 				this.livesStack = new Stack<Sprite>();
 	            
-	            for (int i = 0; i<numLives; i++){
+	            for (int i = 0; i<numLives-1; i++){
 	            	this.livesStack.push( new Sprite((this.xpos-mBallTextureRegion.getWidth())-i*mBallTextureRegion.getWidth(), this.ypos, mBallTextureRegion));
 	            	scene.getLastChild().attachChild(this.livesStack.peek());
 	            }
