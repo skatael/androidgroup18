@@ -218,7 +218,6 @@ public class Arkanoid extends BaseGameActivity {
 
 		private class ScoreBoard {
 			
-			private int lives;
 			private int score;
 			private Scene scene;
 			private Stack<Sprite> livesStack;
@@ -226,16 +225,15 @@ public class Arkanoid extends BaseGameActivity {
 			
 			public ScoreBoard(Scene scene, int lives, int screenXpos, int screenYpos){
 				this.scene = scene;
-				this.lives = lives;
 				this.xpos = screenXpos;
 				this.ypos = screenYpos;
-				displayLives(this.scene, this.lives);
+				displayLives(this.scene, lives);
 			}
 			
 			public void displayLives(Scene scene, int numLives){
 				this.livesStack = new Stack<Sprite>();
 	            
-	            for (int i = 0; i<this.lives; i++){
+	            for (int i = 0; i<numLives; i++){
 	            	this.livesStack.push( new Sprite((this.xpos-mBallTextureRegion.getWidth())-i*mBallTextureRegion.getWidth(), this.ypos, mBallTextureRegion));
 	            	scene.getLastChild().attachChild(this.livesStack.peek());
 	            }
@@ -269,11 +267,10 @@ public class Arkanoid extends BaseGameActivity {
 			}
 			
 			public void die(){
-				this.lives = this.lives - 1;
 				this.decreaseLife();
-				if (this.lives == 0){
+				if (this.livesStack.isEmpty()){
 					Log.i("Arkanoid", "Game over");
-					
+					Log.i("Arkanoid", "ScoreBoard die to handle no more lives");
 					
 					
 				}
