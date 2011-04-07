@@ -59,6 +59,8 @@ public class Arkanoid extends BaseGameActivity {
         //private Paddle paddle;
         private BlockController blockController;
         
+        private BallView ball;
+        
         //Ball Textures
         private Texture bTexture;
         private TextureRegion mBallTextureRegion;
@@ -170,7 +172,7 @@ public class Arkanoid extends BaseGameActivity {
             scene.setOnSceneTouchListener(paddle);
             
             //final Ball ball = new Ball(224,584, this.mBallTextureRegion,this);
-            final BallView ball = new BallView(200, 300, this.mBallTextureRegion, this, centerY);
+             ball = new BallView(200, 300, this.mBallTextureRegion, this, centerY);
             
             //add listener to ball to check for collision
             //listener must extend EntityView
@@ -183,6 +185,7 @@ public class Arkanoid extends BaseGameActivity {
             for(int i = 0; i <blocks.length;i++){
             	
             	scene.getLastChild().attachChild(blocks[i]);
+            	ball.addListener(blocks[i]);
             }
             
             
@@ -216,6 +219,10 @@ public class Arkanoid extends BaseGameActivity {
         public int getCAMERA_HEIGHT(){
         	return CAMERA_HEIGHT;
         }
+        
+        public BallView getBallView(){
+			return ball;
+		}
 		
         /**
          * Method called by ball when it dies
@@ -338,7 +345,9 @@ public class Arkanoid extends BaseGameActivity {
 					}
 					
 				});
+				
 			}
+			
 			
 			/**
 			 * This is called each time the player dies. Number of remaining lives are checked and
