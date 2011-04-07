@@ -22,10 +22,15 @@ import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 /**
  * 
@@ -377,21 +382,23 @@ public class Arkanoid extends BaseGameActivity {
 			
 			/**
 			 * This is called each time the player dies. Number of remaining lives are checked and
-			 * player is directed to new view when game over. 
-			 * TODO Highscore handler
+			 * player is directed to highscore registration if the score is within the highscorelist,
+			 * else to the main menu.
 			 */
 			public void die(){
 				this.decreaseLife();
 				if (this.livesStack.isEmpty()){
 					Log.i("Arkanoid", "Game over");
 					Log.i("Arkanoid", "ScoreBoard die to handle no more lives");
-					
-					
+					Highscore hs = new Highscore(Arkanoid.this);
+					if(this.score > hs.getScore(9)){
+						Intent entername = new Intent(Arkanoid.this, EnterName.class);
+						entername.putExtra("score", score);
+						startActivity(entername);
+					}
+					finish();
 				}
-			}
-			
-			
-			
+			}			
 			
 		}
 		

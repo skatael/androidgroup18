@@ -6,10 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+/**
+ * @author Thomas Marstrander
+ * 
+ * A screen which displays current highscores.
+ *
+ */
 public class HighscoresView extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		Highscore hs = new Highscore(this);
 		setContentView(R.layout.highscores);
@@ -26,6 +31,10 @@ public class HighscoresView extends Activity {
 		}
 
 	}
+	/**
+	 * @param v the current view
+	 * the onClick action of a button that returns you to the main menu.
+	 */
 	public void back(View v){
 		finish();
 	}
