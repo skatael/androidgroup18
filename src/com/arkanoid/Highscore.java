@@ -51,7 +51,7 @@ public class Highscore {
 
     /**
      * @param score
-     * @return check if the score is in the Highscore-List
+     * @return true if the score is in the Highscore-List.
      */
     public boolean inHighscore(long score)
     {
@@ -65,7 +65,7 @@ public class Highscore {
     /**
      * @param name
      * @param score
-     * @return add the score with the name to the Highscore-List
+     * @return true if it manages to add the name and score to the Highscore-List.
      */
     public boolean addScore(String name, long score)
     {
