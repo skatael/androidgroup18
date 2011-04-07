@@ -13,7 +13,9 @@ import org.anddev.andengine.engine.options.resolutionpolicy.RatioResolutionPolic
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.background.ColorBackground;
 import org.anddev.andengine.entity.sprite.Sprite;
+import org.anddev.andengine.entity.text.ChangeableText;
 import org.anddev.andengine.entity.util.FPSLogger;
+import org.anddev.andengine.opengl.font.Font;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
@@ -21,6 +23,8 @@ import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.Log;
 
 
@@ -63,6 +67,9 @@ public class Arkanoid extends BaseGameActivity {
         
         private ScoreBoard sb;
         
+        
+        private Texture mFontTexture;
+        private Font mFont;
 
        // ===========================================================
 
@@ -124,6 +131,12 @@ public class Arkanoid extends BaseGameActivity {
             	e.printStackTrace();
             }
 
+            //fontsetup
+            this.mFontTexture = new Texture(256, 256, TextureOptions.BILINEAR);
+            this.mFont = new Font(this.mFontTexture, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 24, true, Color.BLACK);
+            this.mEngine.getTextureManager().loadTexture(this.mFontTexture);
+            this.mEngine.getFontManager().loadFont(this.mFont);
+            //fontsetup
             
             this.mEngine.getTextureManager().loadTextures(this.pTexture,this.bTexture,this.bTexture);
 
@@ -210,6 +223,13 @@ public class Arkanoid extends BaseGameActivity {
 		public void die(){
 			this.sb.die();
 		}
+		/**
+		 * Method called to update score with new value
+		 @param increase the increase to the score value
+		 */
+		public void updateScore(int increase){
+			this.sb.updateScore(increase);
+		}
 		
         // ===========================================================
 
@@ -223,11 +243,11 @@ public class Arkanoid extends BaseGameActivity {
 		 */
 		private class ScoreBoard {
 			
-			private int score;
+			private long score;
 			private Scene scene;
 			private Stack<Sprite> livesStack;
 			private int xpos, ypos;
-			
+			private ChangeableText scoreText;
 			
 			/**
 			 * 
@@ -240,7 +260,9 @@ public class Arkanoid extends BaseGameActivity {
 				this.scene = scene;
 				this.xpos = screenXpos;
 				this.ypos = screenYpos;
-				displayLives(this.scene, lives);
+				this.score = 0;
+				initScore(this.scene);
+				initLives(this.scene, lives);
 			}
 			
 			/**
@@ -249,13 +271,24 @@ public class Arkanoid extends BaseGameActivity {
 			 @param scene the scene that this should be drawn in
 			 @param numLives number of lives
 			 */
-			public void displayLives(Scene scene, int numLives){
+			private void initLives(Scene scene, int numLives){
 				this.livesStack = new Stack<Sprite>();
 	            
 	            for (int i = 0; i<numLives-1; i++){
 	            	this.livesStack.push( new Sprite((this.xpos-mBallTextureRegion.getWidth())-i*mBallTextureRegion.getWidth(), this.ypos, mBallTextureRegion));
 	            	scene.getLastChild().attachChild(this.livesStack.peek());
 	            }
+			}
+			
+			/**
+			 * 
+			 @param scene scene to init the text
+			 */
+			
+			private void initScore(Scene scene){
+				this.scoreText = new ChangeableText(0, 0, mFont, "Score: "+String.valueOf(this.score));
+				this.scene.getLastChild().attachChild(scoreText);
+
 			}
 			
 			/**
@@ -291,6 +324,23 @@ public class Arkanoid extends BaseGameActivity {
 				});
 			}
 			/**
+			 * Handles updating of the score
+			 @param value the increase to the score
+			 */
+			public void updateScore(int value){
+				this.score = this.score+value;
+				runOnUpdateThread(new Runnable()
+				{
+
+					@Override
+					public void run() {
+                        scoreText.setText("Score: "+String.valueOf(score));
+					}
+					
+				});
+			}
+			
+			/**
 			 * This is called each time the player dies. Number of remaining lives are checked and
 			 * player is directed to new view when game over. 
 			 * TODO Highscore handler
@@ -304,6 +354,8 @@ public class Arkanoid extends BaseGameActivity {
 					
 				}
 			}
+			
+			
 			
 			
 		}
