@@ -43,8 +43,17 @@ public class Block extends EntityView{
 	public int[] collides(EntityView view) {
 		int[] returnvalues = {1, 1};
 		if(this.collidesWith(view)&& !destroy){
-			returnvalues[1] = -1;
+			if((ark.getBallView().getY() < (this.getY() + this.getHeight()))&&(ark.getBallView().getY()>(this.getY()+ark.getBallView().getHeight()))){
+				returnvalues[0] = -1;
+			}else{
+				returnvalues[1] = -1;
+				
+			}
+			
+			
 			gotHit();
+			
+			
 		}
 		return returnvalues;
 	}
