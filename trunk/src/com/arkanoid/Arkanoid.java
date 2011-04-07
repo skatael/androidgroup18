@@ -27,7 +27,11 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.Log;
 
-
+/**
+ * 
+ * @author Dahl
+ * Main class of the game
+ */
 
 public class Arkanoid extends BaseGameActivity {
 
@@ -36,11 +40,21 @@ public class Arkanoid extends BaseGameActivity {
         // Constants
 
         // ========================================================
+		/**
+		 * Width of the screen
+		 */
         private static final int CAMERA_WIDTH = 480;
+        /**
+         * Height of the screen
+         */
         private static final int CAMERA_HEIGHT = 800;
-        
+        /**
+         * Speed of the ball
+         */
         private static final float VELOCITY = 100.0f;
-        
+        /**
+         * How many lives the player has
+         */
         private static final int LIVES = 4;
        
 
@@ -207,19 +221,31 @@ public class Arkanoid extends BaseGameActivity {
         // Methods
 
         // ===========================================================
-		
+		/**
+		 * 
+		 * @return the velocity constant
+		 */
 		public float getVELOCITY(){
         	return VELOCITY;
         }
-        
+        /**
+         * 
+         * @return width of the screen
+         */
         public int getCAMERA_WIDTH(){
         	return CAMERA_WIDTH;
         }
-        
+        /**
+         * 
+         * @return height of the screen
+         */
         public int getCAMERA_HEIGHT(){
         	return CAMERA_HEIGHT;
         }
-        
+        /**
+         * 
+         * @return the ball
+         */
         public BallView getBallView(){
 			return ball;
 		}
