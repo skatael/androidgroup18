@@ -144,8 +144,7 @@ public class Arkanoid extends BaseGameActivity {
 
             /* Create the face and add it to the scene. */
             
-            //attach lives
-            
+            //attach scoreboard
             sb = new ScoreBoard(scene, LIVES, this.getCAMERA_WIDTH(), 0);
             
             
@@ -187,7 +186,6 @@ public class Arkanoid extends BaseGameActivity {
         }
        
 
-
         // ===========================================================
 
         // Methods
@@ -206,6 +204,9 @@ public class Arkanoid extends BaseGameActivity {
         	return CAMERA_HEIGHT;
         }
 		
+        /**
+         * Method called by ball when it dies
+         */
 		public void die(){
 			this.sb.die();
 		}
@@ -216,6 +217,10 @@ public class Arkanoid extends BaseGameActivity {
 
         // ===========================================================
 
+		/**
+		 @author matsgora
+		 * Inner class that handles the scoreboard and lives in the game.
+		 */
 		private class ScoreBoard {
 			
 			private int score;
@@ -223,6 +228,14 @@ public class Arkanoid extends BaseGameActivity {
 			private Stack<Sprite> livesStack;
 			private int xpos, ypos;
 			
+			
+			/**
+			 * 
+			 @param scene reference to the parent scene
+			 @param lives number of lives
+			 @param screenXpos screen y position of this score board
+			 @param screenYpos screen y position of this score board
+			 */
 			public ScoreBoard(Scene scene, int lives, int screenXpos, int screenYpos){
 				this.scene = scene;
 				this.xpos = screenXpos;
@@ -230,6 +243,12 @@ public class Arkanoid extends BaseGameActivity {
 				displayLives(this.scene, lives);
 			}
 			
+			/**
+			 * Draws the score board during initialization
+			 * 
+			 @param scene the scene that this should be drawn in
+			 @param numLives number of lives
+			 */
 			public void displayLives(Scene scene, int numLives){
 				this.livesStack = new Stack<Sprite>();
 	            
@@ -239,6 +258,9 @@ public class Arkanoid extends BaseGameActivity {
 	            }
 			}
 			
+			/**
+			 * Decrease a life when player dies
+			 */
 			public void decreaseLife(){
 				runOnUpdateThread(new Runnable()
 				{
@@ -252,6 +274,9 @@ public class Arkanoid extends BaseGameActivity {
 				});
 			}
 			
+			/**
+			 * Increases life of player when needed.
+			 */
 			public void increaseLife(){
 				runOnUpdateThread(new Runnable()
 				{
@@ -265,7 +290,11 @@ public class Arkanoid extends BaseGameActivity {
 					
 				});
 			}
-			
+			/**
+			 * This is called each time the player dies. Number of remaining lives are checked and
+			 * player is directed to new view when game over. 
+			 * TODO Highscore handler
+			 */
 			public void die(){
 				this.decreaseLife();
 				if (this.livesStack.isEmpty()){

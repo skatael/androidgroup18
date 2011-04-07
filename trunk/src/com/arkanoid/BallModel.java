@@ -7,23 +7,40 @@ import org.anddev.andengine.engine.handler.physics.PhysicsHandler;
 import org.anddev.andengine.entity.sprite.Sprite;
 
 
+/**
+ * 
+ @author matsgora
+ *
+ *The model contains the state of the entity. In this case the ball
+ */
+
 public class BallModel {
 	
 	private Arkanoid ark;
 	private float x,y;
-	private EntityView entity;
+	private EntityView view;
 	private float velocity;
 	private PhysicsHandler mPhysicsHandler;
 	private List<EntityView> entityListeners;
 	private int touchArea;
 	
-	public BallModel(Arkanoid ark, float x, float y, PhysicsHandler mPhysicsHandler, EntityView entity, int touchArea) {
+	
+	/**
+	 * 
+	 @param ark parent game reference
+	 @param x initial x position when entity is placed under game initializing (possible remove)
+	 @param y initial y position when entity is placed under game initializing (possible remove)
+	 @param mPhysicsHandler the physicshandler for this entity
+	 @param view the view of this model
+	 @param touchArea ?
+	 */
+	public BallModel(Arkanoid ark, float x, float y, PhysicsHandler mPhysicsHandler, EntityView view, int touchArea) {
 		this.setArk(ark);
 		this.setX(x);
 		this.setY(y);
 		this.setMPhysicsHandler(mPhysicsHandler);
 		this.setVelocity(ark.getVELOCITY());
-		this.setEntityView(entity);
+		this.setEntityView(view);
 		this.entityListeners = new ArrayList<EntityView>();
 		this.setTouchArea(touchArea);
 	}
@@ -48,11 +65,11 @@ public class BallModel {
 	}
 	
 	public EntityView getEntityView() {
-		return entity;
+		return view;
 	}
 
 	private void setEntityView(EntityView entity) {
-		this.entity = entity;
+		this.view = entity;
 	}
 
 	public float getVelocity() {
@@ -74,10 +91,19 @@ public class BallModel {
 		return entityListeners;
 	}
 
+	/**
+	 * Add entities that should be checked for collisions with this entity.
+	 @param Listener entity that should be checked on update
+	 @see BallView.onManagedUpdate() and BallController.update() for how collisions are handled
+	 */
 	public void addListeners(EntityView Listener) {
 		this.entityListeners.add(Listener);
 	}
 	
+	/**
+	 * Remove entities that no longer should be checked for collisions with this entity.
+	 @param Listener entity that should be removed
+	 */
 	public void delListener(Sprite Listener) {
 		this.entityListeners.remove(Listener);
 	}
