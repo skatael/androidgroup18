@@ -9,8 +9,8 @@ public class UnCrushableBlock extends Block{
 	private int worth;
 	private String powerup;
 	
-	public UnCrushableBlock(float pX, float pY, TextureRegion pTextureRegion) {
-		super(pX, pY, pTextureRegion);
+	public UnCrushableBlock(float pX, float pY, TextureRegion pTextureRegion, Arkanoid ark) {
+		super(pX, pY, pTextureRegion, ark);
 		// TODO Auto-generated constructor stub
 	}
 	public float GetX(){
@@ -21,7 +21,7 @@ public class UnCrushableBlock extends Block{
 	}
 	public void gotHit(){
 		if(lives <= 0){
-			//display explosion el no sånn
+			//display explosion el no sï¿½nn
 			
 			//create powerup?
 		}

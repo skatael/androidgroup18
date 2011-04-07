@@ -1,19 +1,21 @@
 package com.arkanoid;
 
-import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
-public class Block extends Sprite{
+public class Block extends EntityView{
 	
 	private int lives;
 	private int worth;
 	private String powerup;
+	private Arkanoid ark;
+	private boolean destroy;
 	
 	//temp constructor
-	public Block(float pX, float pY, TextureRegion pTextureRegion) {
+	public Block(float pX, float pY, TextureRegion pTextureRegion, Arkanoid ark) {
 		super(pX, pY, pTextureRegion);
-		
+		this.ark = ark;
 		// TODO Auto-generated constructor stub
+		destroy = false;
 	}
 	
 	//final constructor
@@ -32,12 +34,23 @@ public class Block extends Sprite{
 		return this.getY();
 	}
 	public void gotHit(){
-		lives =lives -1;
-		if(lives <= 0){
-			//display explosion el no sånn
-			
-			//create powerup?
+		this.destroy = true;
+		ark.getBlockController().removeBlock();
+		
+	}
+
+	@Override
+	public int[] collides(EntityView view) {
+		int[] returnvalues = {1, 1};
+		if(this.collidesWith(view)&& !destroy){
+			returnvalues[1] = -1;
+			gotHit();
 		}
+		return returnvalues;
+	}
+	
+	public boolean getDestroy(){
+		return destroy;
 	}
 
 }
