@@ -16,6 +16,8 @@ public class Block extends EntityView{
 		this.ark = ark;
 		// TODO Auto-generated constructor stub
 		destroy = false;
+		worth = 678;
+		
 	}
 	
 	//final constructor
@@ -36,6 +38,7 @@ public class Block extends EntityView{
 	public void gotHit(){
 		this.destroy = true;
 		ark.getBlockController().removeBlock();
+		ark.updateScore(this.worth);
 		
 	}
 
