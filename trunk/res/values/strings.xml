@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, arkkk!</string>
     <string name="app_name">Balls of Steel</string>
-    <string name="self_destruct">gay</string>
     <string name="splash">splash</string>
     <string name="menu">menu</string>
-    <string name="arkkk">arkkk</string>
     <string name="game">game</string>
     <string name="newgame">New Game</string>
     <string name="cont">Continue Game</string>
@@ -20,4 +17,8 @@
 	Lauritz Møllersen\n
 	Thomas Marstrander</string>
     <string name="returnmain">Return to Main Menu</string>
+    <string name="congrats">Great Score!\n\n
+    Immortalize yourself by entering your name or initials:</string>
+    <string name="yourname">Enter your name..</string>
+    <string name="submit">Submit</string>
 </resources>

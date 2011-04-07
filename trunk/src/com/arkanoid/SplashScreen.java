@@ -7,6 +7,10 @@ import org.anddev.andengine.ui.activity.BaseSplashActivity;
 
 import android.app.Activity;
 
+/**
+ * @author fedme
+ * A Splashscreen which plays before the mainmenu is opened.
+ */
 public class SplashScreen extends BaseSplashActivity {
 	
     private static final int SPLASH_DURATION = 2;
@@ -14,30 +18,25 @@ public class SplashScreen extends BaseSplashActivity {
 
 	@Override
 	protected ScreenOrientation getScreenOrientation() {
-		// TODO Auto-generated method stub
         return ScreenOrientation.PORTRAIT;
 	}
 
 	@Override
 	protected ITextureSource onGetSplashTextureSource() {
-		// TODO Auto-generated method stub
         return new AssetTextureSource(this, "gfx/arkanoid-screen1.png");
 	}
 
 	@Override
 	protected float getSplashDuration() {
-		// TODO Auto-generated method stub
 		return SPLASH_DURATION;
 	}
 	@Override
 	protected float getSplashScaleFrom() {
-		// TODO Auto-generated method stub
 		return SPLASH_SCALE_FROM;
 	}
 
 	@Override
 	protected Class<? extends Activity> getFollowUpActivity() {
-		// TODO Auto-generated method stub
 		return Menu.class;
 	}
 
