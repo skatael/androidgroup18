@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:orientation="vertical" android:paddingLeft="30px" android:paddingRight="30px" android:paddingTop="10px" android:layout_height="match_parent">
+    <TextView android:layout_height="wrap_content" android:text="@string/highscore" android:id="@+id/textView1" android:layout_width="wrap_content"></TextView>
+    <RelativeLayout android:id="@+id/relativeLayout1" android:layout_width="match_parent" android:layout_marginTop="20px" android:layout_height="wrap_content">
+        <LinearLayout android:layout_alignParentLeft="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/linearLayout1" android:orientation="vertical">
+        </LinearLayout>
+        <LinearLayout android:layout_width="wrap_content" android:layout_alignParentRight="true" android:layout_height="wrap_content" android:id="@+id/linearLayout2" android:orientation="vertical">
+        </LinearLayout>
+    </RelativeLayout>
+    <Button android:layout_marginTop="40px" android:onClick="back" android:id="@+id/button1" android:layout_height="wrap_content" android:layout_width="match_parent" android:text="@string/returnmain"></Button>
+</LinearLayout>

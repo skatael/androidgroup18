@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Balls of Steel</string>
+    <string name="splash">splash</string>
+    <string name="menu">menu</string>
+    <string name="game">game</string>
+    <string name="newgame">New Game</string>
+    <string name="cont">Continue Game</string>
+    <string name="highscore">Highscore</string>
+    <string name="creds">Credits</string>
+    <string name="exit">Exit Game</string>
+    <string name="gamename">Balls of Steel</string>
+    <string name="groupname">Group 18 - NTNU\n
+    Anders DahlLingjerde\n
+	Mats-Gøran Karlsen\n
+	Kenneth J Wannebo\n
+	Lauritz Møllersen\n
+	Thomas Marstrander</string>
+    <string name="returnmain">Return to Main Menu</string>
+    <string name="congrats">Great Score!\n\n
+    Immortalize yourself by entering your name or initials:</string>
+    <string name="yourname">Enter your name..</string>
+    <string name="submit">Submit</string>
+</resources>
