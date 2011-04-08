@@ -324,7 +324,7 @@ public class Arkanoid extends BaseGameActivity {
 			 */
 			
 			private void initScore(Scene scene){
-				this.scoreText = new ChangeableText(0, 0, mFont, "Score: "+String.valueOf(this.score));
+				this.scoreText = new ChangeableText(0, 0, mFont, "Score: "+String.valueOf(this.score), "Score: XXXXXXXX".length());
 				this.scene.getLastChild().attachChild(scoreText);
 
 			}
@@ -367,6 +367,8 @@ public class Arkanoid extends BaseGameActivity {
 			 */
 			public void updateScore(int value){
 				this.score = this.score+value;
+				
+				
 				runOnUpdateThread(new Runnable()
 				{
 
