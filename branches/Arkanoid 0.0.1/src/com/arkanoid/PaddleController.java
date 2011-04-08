@@ -1,5 +1,7 @@
 package com.arkanoid;
 
+import java.util.Random;
+
 /**
  * 
  @author matsgora
@@ -52,13 +54,17 @@ public class PaddleController {
 	 @see EntityView
 	 */
 	
-	public int[] collides(EntityView view){
-		int[] returnvalues = {1, 1};
+	public float[] collides(EntityView view){
+		float[] returnvalues = {1, 1};
 		if (this.getEntityModel().getView().collidesWith(view)){
 			if((entityModel.getArk().getBallView().getY() < (entityModel.getView().getY() + entityModel.getView().getHeight()))&&(entityModel.getArk().getBallView().getY()>(entityModel.getView().getY()+entityModel.getArk().getBallView().getHeight()))){
 				returnvalues[0] = -1;
 			}else{
-				returnvalues[1] = -1;
+			    Random randomGenerator = new Random();
+			      float randomFloat = (float)-0.2*randomGenerator.nextFloat();
+			    
+			      returnvalues[1] = -1+randomFloat;
+				
 			}
 			
 		}

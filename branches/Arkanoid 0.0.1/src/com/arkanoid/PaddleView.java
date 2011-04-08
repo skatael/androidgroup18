@@ -106,7 +106,7 @@ public class PaddleView extends EntityView implements IOnSceneTouchListener {
 	}
 
 	@Override
-	public int[] collides(EntityView view) {
+	public float[] collides(EntityView view) {
 		// TODO Auto-generated method stub
 		return this.getEntityController().collides(view);
 	}
