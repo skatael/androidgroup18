@@ -8,7 +8,7 @@ import org.anddev.andengine.ui.activity.BaseSplashActivity;
 import android.app.Activity;
 
 /**
- * @author fedme
+ * @author Thomas Marstrander
  * A Splashscreen which plays before the mainmenu is opened.
  */
 public class SplashScreen extends BaseSplashActivity {
