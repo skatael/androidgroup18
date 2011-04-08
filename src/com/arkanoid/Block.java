@@ -73,8 +73,8 @@ public class Block extends EntityView{
 	 * @return values used to change the speed of the ball according to how the collision happens
 	 */
 	@Override
-	public int[] collides(EntityView view) {
-		int[] returnvalues = {1, 1};
+	public float[] collides(EntityView view) {
+		float[] returnvalues = {1, 1};
 		if(this.collidesWith(view)&& !destroy){
 			if((ark.getBallView().getY() < (this.getY() + this.getHeight()))&&(ark.getBallView().getY()>(this.getY()+ark.getBallView().getHeight()))){
 				returnvalues[0] = -1;

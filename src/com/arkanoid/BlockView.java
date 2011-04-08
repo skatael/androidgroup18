@@ -10,7 +10,7 @@ public class BlockView extends EntityView {
 	}
 
 	@Override
-	public int[] collides(EntityView view) {
+	public float[] collides(EntityView view) {
 		// TODO Auto-generated method stub
 		return null;
 	}

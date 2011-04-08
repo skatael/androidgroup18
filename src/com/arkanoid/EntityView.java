@@ -25,5 +25,5 @@ public abstract class EntityView extends Sprite {
 	  @param view EntityView that is checked for collision with this entity
 	  @return array which inidcates the new direction the ball should take [xdir, ydir]
 	 */
-	public abstract int[] collides(EntityView view);
+	public abstract float[] collides(EntityView view);
 }
