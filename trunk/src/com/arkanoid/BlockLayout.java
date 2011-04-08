@@ -1,12 +1,19 @@
 package com.arkanoid;
-
+/**
+ * class used to setup the blocks for a given level
+ * @author dahl
+ *
+ */
 public class BlockLayout {
-//	
-//	klasse som brukes til å sette opp blockene for en gitt level
-//	1 = crushable
-//	2 = uncrushable
-//	0 = line break for blockene
+	/**
+	 * array of blocks
+	 */
 	private static int[] blocks;
+	/**
+	 * constructs the blockarray based on which level the game is on
+	 * @param level which level is currently being played
+	 * @return the array of blocks
+	 */
 	public static int[] MakeBlocks(int level) {
 		
 		

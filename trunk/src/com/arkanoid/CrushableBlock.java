@@ -6,6 +6,7 @@ import com.arkanoid.Block;
 
 /**
  * Class used to create blocks that are destroyable
+ * @author dahl
  */
 public class CrushableBlock extends Block{
 	/**
