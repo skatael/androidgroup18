@@ -5,7 +5,7 @@ import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import com.arkanoid.Block;
 /**
  * class used for creating undestroyable blocks
- * @author kenneth
+ * @author dahl
  *
  */
 public class UnCrushableBlock extends Block{
